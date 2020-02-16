@@ -28,8 +28,10 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
             // REST API用
             auth.inMemoryAuthentication()
                 .withUser("remoteUser")
-                .password(passwordEncoder().encode("remoteSecret"))
-                .authorities("REST");
+                  .password(passwordEncoder().encode("remoteSecret")).authorities("REST")
+                .and()
+                .withUser("waker")
+                  .password(passwordEncoder().encode("d2FrZXVw")).authorities("HEART");
         }
 
         @Override
@@ -37,12 +39,15 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
             http
               .requestMatchers()
                   .antMatchers(
-                      "/task/**"
+                      "/task/**",
+                      "/heartbeat/**"
                   )
               .and()
               .authorizeRequests()
-                  .anyRequest().hasAnyAuthority("REST")
+                  .antMatchers("/task/**").hasAuthority("REST")
+                  .antMatchers("/heartbeat/**").hasAuthority("HEART")
               .and()
+              
               .httpBasic()
               .and()
               .csrf()
