@@ -10,5 +10,6 @@ public class CronJobScheduleForm {
     private String description;
     private String overtime;
     private String cronExpression;
+    private String mail;
     
 }

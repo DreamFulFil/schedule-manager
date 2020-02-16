@@ -14,6 +14,7 @@ public class CronJobScheduleToDtoConverter {
         checkinParams.setDescription(cronJobScheduleForm.getDescription());
         checkinParams.setOvertime(cronJobScheduleForm.getOvertime());
         checkinParams.setSecret(AESUtil.encrypt(cronJobScheduleForm.getSecret()));
+        checkinParams.setMail(cronJobScheduleForm.getMail());
         return checkinParams;
     }
     
