@@ -38,6 +38,7 @@ public class CheckinService {
         String destination = checkinConfigurationProperties.getTokenUrl();
         String format = "grant_type=password&username=%s&password=%s";
         String params = String.format(format, username, secret); 
+        log.info("Params for token:" + params);
         
         return httpService.makeUrlEncodedPost(destination, params, false, null);
     }
@@ -61,7 +62,7 @@ public class CheckinService {
         }
         
         // STEP 2
-//        if(isWeekend()) { return "週末打什麼卡"; }
+        if(isWeekend()) { return "週末打什麼卡"; }
         if(isNationalHoliday()) { return "Today is national holiday, no need to check in"; }
         
         // STEP 3
@@ -71,7 +72,8 @@ public class CheckinService {
         else {
             if(checkinConfigurationProperties.isEnabled()) {
                 String token = getBearerToken(checkinParams.getUsername(), AESUtil.decrypt(checkinParams.getSecret()));
-                log.info("Token:" + token);
+                log.info("Received Token:" + token);
+                log.info("Params for checkin:" + checkinParams.getQueryString());
                 return httpService.makeUrlEncodedPost(destination, checkinParams.getQueryString(), true, token);
             }
             else {
