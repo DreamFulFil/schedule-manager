@@ -10,8 +10,8 @@ Configuration:
 
     RollingFile:
       - name: LogToRollingFile
-        fileName: /usr/local/share/logs/checkin.log
-        filePattern: "/usr/local/share/logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
+        fileName: ./schedule.log
+        filePattern: "./$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
         PatternLayout:
           pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS}{GMT+8} [%t] %c{1} - %msg%n"
         Policies:
