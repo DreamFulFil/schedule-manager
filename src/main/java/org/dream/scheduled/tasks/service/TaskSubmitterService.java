@@ -1,5 +1,6 @@
 package org.dream.scheduled.tasks.service;
 
+import org.dream.scheduled.tasks.entity.CronJobSchedule;
 import org.dream.scheduled.tasks.entity.TaskSubmitter;
 import org.dream.scheduled.tasks.repository.TaskSubmitterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,10 @@ public class TaskSubmitterService {
     
     public TaskSubmitter save(TaskSubmitter taskSubmitter) {
         return taskSubmitterRepository.save(taskSubmitter);
+    }
+    
+    public TaskSubmitter findByCronJobSchedule(CronJobSchedule cronJobSchedule) {
+        return taskSubmitterRepository.findInCronJobSchedule(cronJobSchedule);
     }
     
 }

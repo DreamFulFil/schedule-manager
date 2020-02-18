@@ -38,7 +38,6 @@ public class CheckinService {
         String destination = checkinConfigurationProperties.getTokenUrl();
         String format = "grant_type=password&username=%s&password=%s";
         String params = String.format(format, username, secret); 
-        log.info("Params for token:" + params);
         
         return httpService.makeUrlEncodedPost(destination, params, false, null);
     }
@@ -53,6 +52,8 @@ public class CheckinService {
      * STEP 3: 檢查是不是還不到可以打卡的時間
      */
     public String checkin(CheckinParamsDto checkinParams) throws IOException {
+        log.info("打卡時收到的參數:" + checkinParams);
+        
         // STEP 1
         String destination = checkinConfigurationProperties.getCheckinUrl();
         String checkinTime = checkinParams.getCheckinTime();
@@ -63,21 +64,19 @@ public class CheckinService {
         
         // STEP 2
         if(isWeekend()) { return "週末打什麼卡"; }
-        if(isNationalHoliday()) { return "Today is national holiday, no need to check in"; }
+        if(isNationalHoliday()) { return "國定假日不打卡！"; }
         
         // STEP 3
         if(checkinTime == null || checkinTime == "") {
-            return "Can't check in yet";
+            return "還不能打卡喔！(開放時間為0830)";
         }
         else {
             if(checkinConfigurationProperties.isEnabled()) {
                 String token = getBearerToken(checkinParams.getUsername(), AESUtil.decrypt(checkinParams.getSecret()));
-                log.info("Received Token:" + token);
-                log.info("Params for checkin:" + checkinParams.getQueryString());
                 return httpService.makeUrlEncodedPost(destination, checkinParams.getQueryString(), true, token);
             }
             else {
-                return "Automated checkin not enabled";
+                return "自動打卡功能未開啟";
             }
         }
     }
