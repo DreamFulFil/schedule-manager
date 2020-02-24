@@ -1,12 +1,10 @@
 package org.dream.scheduled.tasks.configuration.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import lombok.Data;
 
 @Data
-@Component
 @ConfigurationProperties(prefix = "checkin-config")
 public class CheckinConfigurationProperties {
 

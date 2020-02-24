@@ -111,7 +111,7 @@ public class CronJobScheduleService {
             
             //Create Trigger
             CronTriggerFactoryBean  cronTrigger = new CronTriggerFactoryBean();
-            cronTrigger.setBeanName("TASK_CRONJOB-"+ new Date());
+            cronTrigger.setBeanName("TASK_CRONJOB-"+ new Date().getTime());
             cronTrigger.setCronExpression(cronExp);
             cronTrigger.afterPropertiesSet();
             
