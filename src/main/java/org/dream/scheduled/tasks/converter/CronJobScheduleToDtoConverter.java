@@ -13,6 +13,7 @@ public class CronJobScheduleToDtoConverter {
     public CheckinParamsDto convert(CronJobScheduleInsertForm cronJobScheduleForm) {
         CheckinParamsDto checkinParams = new CheckinParamsDto();
         checkinParams.setUsername(cronJobScheduleForm.getUsername());
+        checkinParams.setCheckinTime(cronJobScheduleForm.getCheckinTime());
         checkinParams.setDescription(cronJobScheduleForm.getDescription());
         checkinParams.setOvertime(cronJobScheduleForm.getOvertime());
         checkinParams.setSecret(AESUtil.encrypt(cronJobScheduleForm.getSecret()));
