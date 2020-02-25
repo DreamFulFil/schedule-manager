@@ -1,7 +1,5 @@
 package org.dream.scheduled.tasks.unit.tests;
 
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -13,39 +11,39 @@ import org.dream.scheduled.tasks.service.CheckinService;
 import org.dream.scheduled.tasks.service.HttpService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CheckinServiceUnitTest {
 
+    // 主要要試的元件所相依的物件，要提供 Mock，注入一個假的物件
     @Mock
     private HttpService httpService;
-    
-    @InjectMocks
-    private CheckinService checkinService;
     
     @Mock
     private CheckinConfigurationProperties checkinConfigurationProperties;
     
+    
+    // 主要要測試的元件
+    @InjectMocks
+    private CheckinService checkinService;
+    
     @BeforeEach
     private void before() throws IOException {
-        when(httpService.makeUrlEncodedPost(anyString(), anyString(), anyBoolean(), anyString()))
-            .thenReturn("true");
-        
-        when(checkinConfigurationProperties.getTokenUrl())
-            .thenReturn("");
+        when(checkinConfigurationProperties.getTokenUrl()).thenReturn("");
     }
     
 	@Test
 	public void givenUsernameAndSecret_whenGetBearerToken_thenCallsHttpServiceOnce() throws IOException {
 	    // Arrange
-	    String username = "george_chou";
-	    String secret = "61N8eo8GZju10B3fbxFaS0XmO5Oz9m2tWsSW2Wlb9N7BEey3OONur04P8JoW2w44";
+	    String username = "test_user";
+	    String secret = "test_secret";
 	    
 	    String destination = "";
-	    String queryString = "grant_type=password&username=george_chou&password=61N8eo8GZju10B3fbxFaS0XmO5Oz9m2tWsSW2Wlb9N7BEey3OONur04P8JoW2w44";
+	    String queryString = "grant_type=password&username=test_user&password=test_secret";
 	    boolean requiresToken = false;
 	    String token = null;
 	    
