@@ -79,5 +79,42 @@ class CheckinServiceUnitTest {
 	    // Assert
 	    assertEquals(expectedResult,result);
 	}
+	
+	@Test
+    public void givenWeekend_whenCheckin_thenReturnsDontCheckinOnWeekends() throws IOException {
+	    // 讓這個測試不要被系統時間綁住，寫死在 2020/02/29 08:40(週末)
+        LocalDateTime fixedTime = LocalDateTime.of(2020,2,29,8,40,0,0);
+        Clock clock = Clock.fixed(fixedTime.toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
+        checkinService.setClock(clock);
+        
+        CheckinParamsDto checkinParams = mock(CheckinParamsDto.class);
+        when(checkinConfigurationProperties.getCheckinTime()).thenReturn("08:30");
+        String expectedResult = "週末打什麼卡";
+        
+        // Act
+        String result = checkinService.checkin(checkinParams);
+        
+        // Assert
+        assertEquals(expectedResult,result);
+	}
+	
+	@Test
+    public void givenNationalHoliday_whenCheckin_thenReturnsDontCheckinOnWeekends() throws IOException {
+        // 讓這個測試不要被系統時間綁住，寫死在 2020/02/28 08:40(國定假)
+        LocalDateTime fixedTime = LocalDateTime.of(2020,2,28,8,40,0,0);
+        Clock clock = Clock.fixed(fixedTime.toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
+        checkinService.setClock(clock);
+        
+        CheckinParamsDto checkinParams = mock(CheckinParamsDto.class);
+        when(checkinConfigurationProperties.getHolidays()).thenReturn("2020/02/28");
+        when(checkinConfigurationProperties.getCheckinTime()).thenReturn("08:30");
+        String expectedResult = "國定假日不打卡！";
+        
+        // Act
+        String result = checkinService.checkin(checkinParams);
+        
+        // Assert
+        assertEquals(expectedResult,result);
+    }
 
 }
