@@ -62,8 +62,9 @@ class CheckinServiceUnitTest {
 	public void givenCheckinNotEnabled_whenCheckin_thenReturnsNotEnabled() throws IOException {
 	    // Arrange
 	    
-	    // 讓這個測試不要被系統時間綁住
-	    Clock clock = Clock.fixed(LocalDateTime.of(2020,2,26,8,40,0,0).toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
+	    // 讓這個測試不要被系統時間綁住，寫死在 2020/02/26 08:40
+	    LocalDateTime fixedTime = LocalDateTime.of(2020,2,26,8,40,0,0);
+	    Clock clock = Clock.fixed(fixedTime.toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
 	    checkinService.setClock(clock);
 	    
 	    CheckinParamsDto checkinParams = mock(CheckinParamsDto.class);
