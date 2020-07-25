@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:h2:file:./spring-boot-h2-db
     username: sa
-    password: 
+    password: dreamer@2020
     driver-class-name: org.h2.Driver
   jpa:
     hibernate.ddl-auto: update
@@ -45,5 +45,15 @@ checkin-config:
   checkin-time: '08:30'
   checkout-time: '17:30'
   enabled: true
-  
+
+---
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:h2:file:./spring-boot-h2-test-db
+    username: sa
+    password: dreamer-tester@2020
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate.ddl-auto: create
 
