@@ -20,6 +20,7 @@ pom.xml
 
 ### target ###
 target/classes
+!target/classes/*.yml
 target/generated-sources
 target/generated-test-sources
 target/test-classes
