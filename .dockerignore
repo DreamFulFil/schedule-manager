@@ -1,0 +1,25 @@
+### Maven ###
+.mvn
+pom.xml
+
+### Git ###
+.git
+
+### STS ###
+.classpath
+.factorypath
+.project
+.settings
+
+### Source code ###
+**/src/main/**
+**/src/test/**
+
+### MAC ##
+.DS_Store
+
+### target ###
+target/classes
+target/generated-sources
+target/generated-test-sources
+target/test-classes
