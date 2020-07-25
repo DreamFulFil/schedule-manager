@@ -1,6 +1,7 @@
 package org.dream.scheduled.tasks.service;
 
 import java.io.IOException;
+import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,7 +11,6 @@ import java.util.Arrays;
 import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
 import org.dream.scheduled.tasks.dto.CheckinParamsDto;
 import org.dream.scheduled.tasks.util.AESUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +19,22 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class CheckinService {
     
-    @Autowired
     private CheckinConfigurationProperties checkinConfigurationProperties;
-    
-    @Autowired
     private HttpService httpService;
+    private Clock clock = Clock.systemDefaultZone();
     
+    // Setter Injection
+    public void setCheckinConfigurationProperties(CheckinConfigurationProperties checkinConfigurationProperties) {
+        this.checkinConfigurationProperties = checkinConfigurationProperties;
+    }
+
+    public void setHttpService(HttpService httpService) {
+        this.httpService = httpService;
+    }
+    
+    public void setClock(Clock clock) {
+        this.clock = clock;
+    }
     
     /**
      * @author George-Chou
@@ -91,7 +101,7 @@ public class CheckinService {
     private String getDefaultCheckinTime() {
         String checkinTime = null;
         
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(clock);
         int year = now.getYear();
         int monthValue = now.getMonthValue();
         int dayOfMonth = now.getDayOfMonth();
@@ -114,7 +124,7 @@ public class CheckinService {
      * 預設是讀 application.yml 裡設定的假日清單
      */
     private boolean isNationalHoliday() {
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(clock);
         String holidays = checkinConfigurationProperties.getHolidays();
         
         // 只比對「年月日」
@@ -139,9 +149,14 @@ public class CheckinService {
             }
             else {
                 // 只放一天
-                LocalDate currentHoliday = LocalDate.parse(holiday,formatter);
-                if(now.isEqual(currentHoliday)) {
-                    return true;
+                try {
+                    LocalDate currentHoliday = LocalDate.parse(holiday,formatter);
+                    if(now.isEqual(currentHoliday)) {
+                        return true;
+                    }
+                }
+                catch(Exception ex) {
+                    return false;
                 }
             }
         }
@@ -154,13 +169,12 @@ public class CheckinService {
      * 
      */
     private boolean isWeekend() {
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(clock);
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         if(Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY).contains(dayOfWeek)) {
             return true;
         }
         return false;
     }
-    
-    
+
 }

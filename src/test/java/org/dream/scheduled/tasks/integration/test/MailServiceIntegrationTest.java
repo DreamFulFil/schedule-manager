@@ -1,4 +1,4 @@
-package org.dream.scheduled.tasks;
+package org.dream.scheduled.tasks.integration.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
