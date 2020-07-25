@@ -5,7 +5,7 @@ spring:
       path: /h2
       
   datasource:
-    url: jdbc:h2:file:./spring-boot-h2-db
+    url: jdbc:h2:file:${user.home}/spring-boot-h2-db
     username: sa
     password: dreamer@2020
     driver-class-name: org.h2.Driver
@@ -50,7 +50,7 @@ checkin-config:
 spring:
   profiles: test
   datasource:
-    url: jdbc:h2:file:./spring-boot-h2-test-db
+    url: jdbc:h2:file:${user.home}/spring-boot-h2-test-db
     username: sa
     password: dreamer-tester@2020
     driver-class-name: org.h2.Driver

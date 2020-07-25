@@ -37,6 +37,8 @@ ENV TZ=Asia/Taipei
 
 ENV JAR_PATH=$HOME_DIR/$JAR_NAME
 
+ENV HOME_PATH=$HOME_DIR
+
 RUN set -eux && \
     ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
