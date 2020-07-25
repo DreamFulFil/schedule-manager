@@ -44,13 +44,4 @@ public class AESUtil {
         return null;
     }
     
-    public static void main(String[] args) {
-        String original = "password";
-        String encrypted = AESUtil.encrypt("password");
-        String decrypted = AESUtil.decrypt(encrypted);
-        System.err.println(original);
-        System.err.println(encrypted);
-        System.err.println(decrypted);
-    }
-    
 }
