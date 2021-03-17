@@ -32,8 +32,8 @@ public class MailServiceIntegrationTest {
     private List<String> getFilePath() {
         return Arrays.asList(getAttachment01().getAbsolutePath(), getAttachment02().getAbsolutePath());
     }
-    @Test
     
+    @Test
     public void serviceInjected_true() {
         assertNotNull(mailService);
     }

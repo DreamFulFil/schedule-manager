@@ -95,7 +95,7 @@ public class CheckinService {
      * @author George-Chou
      * @return 打卡時間
      * 
-     * 預設是「上」班打卡限定在 08:29:59:999 與 17:30:00:000 之間
+     * 預設是「上」班打卡限定在 07:59:999 與 17:30:00:000 之間
      * 預設是「下」班打卡限定在 17:30:00:000 之後
      */
     private String getDefaultCheckinTime() {
@@ -106,7 +106,7 @@ public class CheckinService {
         int monthValue = now.getMonthValue();
         int dayOfMonth = now.getDayOfMonth();
         
-        if(now.isAfter(LocalDateTime.of(year, monthValue, dayOfMonth, 8, 29, 59, 999)) && 
+        if(now.isAfter(LocalDateTime.of(year, monthValue, dayOfMonth, 7, 59, 59, 999)) && 
            now.isBefore(LocalDateTime.of(year, monthValue, dayOfMonth, 17, 30, 0, 0))) {
             checkinTime = checkinConfigurationProperties.getCheckinTime();
         }
