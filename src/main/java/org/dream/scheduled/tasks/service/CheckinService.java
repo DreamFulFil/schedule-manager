@@ -78,7 +78,7 @@ public class CheckinService {
         
         // STEP 3
         if(checkinTime == null || checkinTime == "") {
-            return "還不能打卡喔！(開放時間為0830)";
+            return "還不能打卡喔！(開放時間為0800)";
         }
         else {
             if(checkinConfigurationProperties.isEnabled()) {
