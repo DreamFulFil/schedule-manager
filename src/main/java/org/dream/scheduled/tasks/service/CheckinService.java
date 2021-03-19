@@ -11,6 +11,7 @@ import java.util.Arrays;
 import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
 import org.dream.scheduled.tasks.dto.CheckinParamsDto;
 import org.dream.scheduled.tasks.util.AESUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +25,12 @@ public class CheckinService {
     private Clock clock = Clock.systemDefaultZone();
     
     // Setter Injection
+    @Autowired
     public void setCheckinConfigurationProperties(CheckinConfigurationProperties checkinConfigurationProperties) {
         this.checkinConfigurationProperties = checkinConfigurationProperties;
     }
 
+    @Autowired
     public void setHttpService(HttpService httpService) {
         this.httpService = httpService;
     }
