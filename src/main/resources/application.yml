@@ -28,7 +28,7 @@ spring:
           protocol: smtp
         debug: false
         smtp:
-          from: noreply@gss.com.tw
+          from: auto-checkin-noreply@gss.com.tw
           auth: false
           connectiontimeout: 10000
           timeout: 10000
