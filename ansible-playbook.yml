@@ -2,7 +2,7 @@
 - hosts: localhost
   tasks:
     - name: Running mvn clean
-      shell: "mvn clean install"
+      shell: "mvn clean install -DskipTests"
       register: mvn_result
 
     - name: Print out maven clean result
@@ -11,10 +11,11 @@
 
     - name: Docker build
       community.docker.docker_image:
+        source: build
         build:
           nocache: yes
           path: .
-        name: {{image_name_tag_name}}
+        name: "{{image_name_tag_name}}"
       register: build_result
 
     - name: Print out docker build result
