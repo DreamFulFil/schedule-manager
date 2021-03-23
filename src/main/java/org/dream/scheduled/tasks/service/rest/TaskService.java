@@ -61,7 +61,7 @@ public class TaskService {
     public String updateTask(@RequestBody CronJobScheduleUpdateForm form) {
         CheckinParamsDto checkinParams = cronJobScheduleToDtoConverter.convert(form);
         String taskParams = JSONUtil.toJsonString(checkinParams);
-        boolean updated = cronJobScheduleService.updateCronSchedule(checkinParams.getUsername(), taskParams, form.getCronExpression(), form.isDisable());
+        boolean updated = cronJobScheduleService.updateCronSchedule(form.getIdentifier(), taskParams, form.getCronExpression(), form.isDisable());
         if(updated) {
             return "成功更新任務";
         }
