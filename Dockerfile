@@ -1,4 +1,10 @@
-FROM openjdk:8-jdk-alpine
+FROM alpine:latest
+
+ENV JAVA_HOME="/usr/lib/jvm/default-jvm/"
+RUN apk add openjdk8-jre
+
+# Has to be set explictly to find binaries 
+ENV PATH=$PATH:${JAVA_HOME}/bin
 
 ENV GOSU_VERSION 1.12
 RUN set -eux; \
@@ -37,22 +43,27 @@ ENV TZ=Asia/Taipei
 
 ENV JAR_PATH=$HOME_DIR/$JAR_NAME
 
-ENV HOME_PATH=$HOME_DIR
+ENV CONFIG_PATH=$HOME_DIR/config
 
-RUN set -eux && \
-    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
-    echo $TZ > /etc/timezone
+RUN apk --update add tzdata && \
+    apk --update add ttf-dejavu fontconfig && \
+    cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime && \
+    apk del tzdata && \
+    rm -rf /var/cache/apk/*
 
 RUN set -eux && \
     addgroup --gid 9999 java-app && \
     adduser -S -u 9999 -g java-app -h $HOME_DIR -s /bin/sh -D java-app && \
     chown -R java-app:java-app $HOME_DIR
 
+RUN mkdir -p ${HOME_DIR}/logs && \
+    chown -R java-app:java-app ${HOME_DIR}/logs 
+
 COPY --chown=java-app:java-app ./target/*-SNAPSHOT.jar $JAR_PATH
 
-COPY --chown=java-app:java-app ./target/classes/application.yml $HOME_DIR/application.yml
+COPY --chown=java-app:java-app ./target/classes/application.yml $CONFIG_PATH/application.yml
 
-COPY --chown=java-app:java-app ./target/classes/log4j2.yml $HOME_DIR/log4j2.yml
+COPY --chown=java-app:java-app ./target/classes/log4j2.yml $CONFIG_PATH/log4j2.yml
 
 COPY ./entrypoint.sh entrypoint.sh
 

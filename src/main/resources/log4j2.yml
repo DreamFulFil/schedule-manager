@@ -10,8 +10,8 @@ Configuration:
 
     RollingFile:
       - name: LogToRollingFile
-        fileName: ${sys:user.home}/schedule.log
-        filePattern: "${sys:user.home}/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
+        fileName: ${sys:user.home}/logs/schedule.log
+        filePattern: "${sys:user.home}/logs/$${date:yyyy-MM}/schedule-%d{MM-dd-yyyy}-%i.log.gz"
         PatternLayout:
           pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS}{GMT+8} [%t] %c{1} - %msg%n"
         Policies:
