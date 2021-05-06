@@ -2,7 +2,7 @@
 - hosts: localhost
   tasks:
     - name: Running mvn clean
-      shell: "mvn clean install -DskipTests"
+      shell: "mvn clean install"
       register: mvn_result
 
     - name: Print out maven clean result
