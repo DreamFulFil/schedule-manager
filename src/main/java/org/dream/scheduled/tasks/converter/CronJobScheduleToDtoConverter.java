@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CronJobScheduleToDtoConverter {
 
-    // TODO: Fix this duplication
     public CheckinParamsDto convert(CronJobScheduleInsertForm cronJobScheduleForm) {
         CheckinParamsDto checkinParams = new CheckinParamsDto();
         checkinParams.setUsername(cronJobScheduleForm.getUsername());
