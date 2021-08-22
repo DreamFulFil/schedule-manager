@@ -7,8 +7,10 @@ import javax.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
+@EnableConfigurationProperties
 @ConfigurationPropertiesScan("org.dream.scheduled.tasks.configuration.properties")
 public class ScheduleServiceApplication {
 

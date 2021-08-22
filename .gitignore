@@ -1,9 +1,14 @@
 HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
 /logs
+
+### target ###
+target/
+target/classes/com
+target/generated-sources
+target/generated-test-sources
+target/test-classes
 
 ### STS ###
 .apt_generated
@@ -30,5 +35,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Mac ###
 /.DS_Store
-/schedule.log
