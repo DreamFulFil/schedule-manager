@@ -2,6 +2,10 @@ server:
   port: 6666
 
 spring:
+  profiles:
+    active:
+    - default
+    - mysql
   # Spring cloud Vault settings
   cloud:
     vault:
@@ -17,21 +21,21 @@ spring:
   jpa:
     hibernate.ddl-auto: update
 
-  # DataSource settings
-  datasource:
-    url: jdbc:mysql://mysql:3306/checkin?useUnicode=true&characterEncoding=utf-8
-    username: scheduleclient
-    password: schedule@1234
-    # Reference: 
-    # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
-    hikari:   
-     connection-timeout: 60000 # 建立 Connection 在連線時最多可以「等」Connection Pool 多久
-     idle-timeout: 600000      # 被建立的 Connection 能在 Pool 裡閒置多久
-     keepalive-time: 30000     # 確保 Connection 不會被 DBMS 回收的時間(需小於 maxLifetime，只會發生在 idle Connection)
-     max-lifetime: 600000      # 已建立的 Connection 在 Pool 能存在多久 (只有 Closed 會被刪)
-     minimum-idle: 10          # 最少要持有幾個 Idle Connection(需小於 maximumPoolSize)
-     maximum-pool-size: 10     # Pool 內能存放的最大連線數 (依情況調整大小)
-     leak-detection-threshold: 5000 # 偵測是否有 Connection Leak(沒關的 Connection)
+  # # DataSource settings
+  # datasource:
+  #   url: jdbc:mysql://localhost:3306/checkin?useUnicode=true&characterEncoding=utf-8
+  #   username: scheduleclient
+  #   password: schedule@1234
+  #   # Reference: 
+  #   # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+  #   hikari:   
+  #    connection-timeout: 60000 # 建立 Connection 在連線時最多可以「等」Connection Pool 多久
+  #    idle-timeout: 600000      # 被建立的 Connection 能在 Pool 裡閒置多久
+  #    keepalive-time: 30000     # 確保 Connection 不會被 DBMS 回收的時間(需小於 maxLifetime，只會發生在 idle Connection)
+  #    max-lifetime: 600000      # 已建立的 Connection 在 Pool 能存在多久 (只有 Closed 會被刪)
+  #    minimum-idle: 10          # 最少要持有幾個 Idle Connection(需小於 maximumPoolSize)
+  #    maximum-pool-size: 10     # Pool 內能存放的最大連線數 (依情況調整大小)
+  #    leak-detection-threshold: 5000 # 偵測是否有 Connection Leak(沒關的 Connection)
   
   # Javamail settings
   mail:
@@ -67,53 +71,53 @@ checkin-config:
   checkout-time: '17:30'
   enabled: true
 
-# ---
-# spring:
-#   config:
-#     activate:
-#       on-profile: test
-#   datasource:
-#     url: jdbc:h2:file:${user.home}/spring-boot-h2-test-db
-#     username: sa
-#     password: dreamer-tester@2020
-#     driver-class-name: org.h2.Driver
-#   jpa:
-#     hibernate.ddl-auto: create
-# ---
-# spring:
-#   config:
-#     activate:
-#       on-profile: h2
-#   h2:
-#     console:
-#       enabled: true
-#       path: /h2
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:file:${user.home}/spring-boot-h2-test-db
+    username: sa
+    password: dreamer-tester@2020
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate.ddl-auto: create
+---
+spring:
+  config:
+    activate:
+      on-profile: h2
+  h2:
+    console:
+      enabled: true
+      path: /h2
 
-#   datasource:
-#     url: jdbc:h2:file:${user.home}/spring-boot-h2-db
-#     username: sa
-#     password: dreamer@2020
-#     driver-class-name: org.h2.Driver
-# ---
-# spring:
-  # config:
-  #   activate:
-  #     on-profile: mysql
-  # datasource:
-  #   url: jdbc:mysql://localhost:3306/checkin?useUnicode=true&characterEncoding=utf-8
-  #   username: scheduleclient
-  #   password: schedule@1234
-  #   driver-class: com.mysql.jdbc.Driver
-  #   # password: ENC(9gWZ1H4mWkp415jkGnX13vt9h+e/Hpuv)
-  #   # Reference: 
-  #   # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
-  #   hikari:   
-  #    connection-timeout: 60000 # 建立 Connection 在連線時最多可以「等」Connection Pool 多久
-  #    idle-timeout: 600000      # 被建立的 Connection 能在 Pool 裡閒置多久
-  #    keepalive-time: 30000     # 確保 Connection 不會被 DBMS 回收的時間(需小於 maxLifetime，只會發生在 idle Connection)
-  #    max-lifetime: 600000      # 已建立的 Connection 在 Pool 能存在多久 (只有 Closed 會被刪)
-  #    minimum-idle: 10          # 最少要持有幾個 Idle Connection(需小於 maximumPoolSize)
-  #    maximum-pool-size: 10     # Pool 內能存放的最大連線數 (依情況調整大小)
-  #    leak-detection-threshold: 5000 # 偵測是否有 Connection Leak(沒關的 Connection)
+  datasource:
+    url: jdbc:h2:file:${user.home}/spring-boot-h2-db
+    username: sa
+    password: dreamer@2020
+    driver-class-name: org.h2.Driver
+---
+spring:
+  config:
+    activate:
+      on-profile: 
+      - mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/checkin?useUnicode=true&characterEncoding=utf-8
+    username: scheduleclient
+    password: schedule@1234
+    # password: ENC(9gWZ1H4mWkp415jkGnX13vt9h+e/Hpuv)
+    # Reference: 
+    # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+    hikari:   
+     connection-timeout: 60000 # 建立 Connection 在連線時最多可以「等」Connection Pool 多久
+     idle-timeout: 600000      # 被建立的 Connection 能在 Pool 裡閒置多久
+     keepalive-time: 30000     # 確保 Connection 不會被 DBMS 回收的時間(需小於 maxLifetime，只會發生在 idle Connection)
+     max-lifetime: 600000      # 已建立的 Connection 在 Pool 能存在多久 (只有 Closed 會被刪)
+     minimum-idle: 10          # 最少要持有幾個 Idle Connection(需小於 maximumPoolSize)
+     maximum-pool-size: 10     # Pool 內能存放的最大連線數 (依情況調整大小)
+     leak-detection-threshold: 5000 # 偵測是否有 Connection Leak(沒關的 Connection)
 
 
