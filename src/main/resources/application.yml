@@ -5,6 +5,17 @@ spring:
   profiles:
     active:
     - mysql
+  application:
+    name: checkin
+  cloud:
+    vault:
+      token: s.iZV9mtKpyTKI40cs9xpVE8ss
+      host: vault
+      port: 8200
+      scheme: http
+      kv:
+        enabled: true
+        application-name: jasyptEncryptionKey
     
   jpa:
     hibernate.ddl-auto: update
@@ -42,6 +53,19 @@ checkin-config:
   checkin-time: '08:30'
   checkout-time: '17:30'
   enabled: true
+
+management:
+  # Must expose endpoints to see routes with actuator
+  endpoint:
+    metrics:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+        - health
+        - metrics
+        - info 
 
 ---
 spring:
