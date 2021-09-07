@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 
 import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
 import org.dream.scheduled.tasks.dto.CheckinParamsDto;
@@ -71,7 +72,7 @@ public class CheckinService {
         String destination = checkinConfigurationProperties.getCheckinUrl();
         String checkinTime = checkinParams.getCheckinTime();
         if(checkinTime == null) {
-            checkinTime = getDefaultCheckinTime();
+            checkinTime = this.getDefaultCheckinTime();
             checkinParams.setCheckinTime(checkinTime);
         }
         
@@ -128,11 +129,10 @@ public class CheckinService {
      */
     private boolean isNationalHoliday() {
         LocalDate now = LocalDate.now(clock);
-        String holidays = checkinConfigurationProperties.getHolidays();
+        List<String> holidayUnparsed = checkinConfigurationProperties.getHolidays();
         
         // 只比對「年月日」
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/M/d");
-        String[] holidayUnparsed = holidays.split(",", -1);
         for(String holiday : holidayUnparsed) {
             // 連續假日
             if(holiday.contains("~")) {
@@ -178,6 +178,27 @@ public class CheckinService {
             return true;
         }
         return false;
+    }
+
+    private boolean isMakeUpWorkDay() {
+        LocalDate now = LocalDate.now(clock);
+        List<String> makeUpWorkDaysUnparsed = checkinConfigurationProperties.getMakeUpWorkDays();
+        
+        // 只比對「年月日」
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/M/d");
+
+        for(String makeUpWorkDayUnParsed : makeUpWorkDaysUnparsed) {
+            // 通常只補一天
+            try {
+                LocalDate currentMakeUpWorkDay = LocalDate.parse(makeUpWorkDayUnParsed,formatter);
+                if(now.isEqual(currentMakeUpWorkDay)) {
+                    return true;
+                }
+            }
+            catch(Exception ex) {
+                return false;
+            }
+        }
     }
 
 }

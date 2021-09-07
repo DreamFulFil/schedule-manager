@@ -11,6 +11,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 
 import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
 import org.dream.scheduled.tasks.dto.CheckinParamsDto;
@@ -68,7 +69,7 @@ class CheckinServiceUnitTest {
 	    
 	    CheckinParamsDto checkinParams = mock(CheckinParamsDto.class);
 	    when(checkinConfigurationProperties.isEnabled()).thenReturn(false);
-	    when(checkinConfigurationProperties.getHolidays()).thenReturn("");
+	    when(checkinConfigurationProperties.getHolidays()).thenReturn(Arrays.asList(""));
 	    when(checkinConfigurationProperties.getCheckinTime()).thenReturn("08:30");
 	    String expectedResult = "自動打卡功能未開啟";
 	    
@@ -105,7 +106,7 @@ class CheckinServiceUnitTest {
         checkinService.setClock(clock);
         
         CheckinParamsDto checkinParams = mock(CheckinParamsDto.class);
-        when(checkinConfigurationProperties.getHolidays()).thenReturn("2020/02/28");
+        when(checkinConfigurationProperties.getHolidays()).thenReturn(Arrays.asList("2020/02/28"));
         when(checkinConfigurationProperties.getCheckinTime()).thenReturn("08:30");
         String expectedResult = "國定假日不打卡！";
         

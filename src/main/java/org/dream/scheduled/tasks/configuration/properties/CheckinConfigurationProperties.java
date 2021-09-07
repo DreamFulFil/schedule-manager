@@ -1,5 +1,7 @@
 package org.dream.scheduled.tasks.configuration.properties;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import lombok.Data;
@@ -27,7 +29,10 @@ public class CheckinConfigurationProperties {
     private String checkoutTime;
     
     /** 國定假日 */
-    private String holidays;
+    private List<String> holidays;
+
+    /** 補班日 */
+    private List<String> makeUpWorkDays;
     
     /** 開關打卡(測試用) */
     private boolean enabled;
