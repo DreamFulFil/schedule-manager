@@ -8,6 +8,7 @@ import java.time.Clock;
 
 import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
 import org.dream.scheduled.tasks.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.dto.ResultDto;
 import org.dream.scheduled.tasks.service.CheckinService;
 import org.dream.scheduled.tasks.service.HttpService;
 import org.dream.scheduled.tasks.util.AESUtil;
@@ -50,7 +51,9 @@ public class CheckinServiceIntegrationTest {
         dto.setOvertime("N");
         
         // Act
-        String actual = checkinService.checkin(dto);
+        checkinService.checkin(dto);
+        ResultDto result = checkinService.getValidateCheckinTimeResultThreadLocal().get();
+        String actual = result.getMessage();
         
         // Assert
         assertTrue(actual.indexOf(expected) >=0 );

@@ -12,15 +12,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.dream.scheduled.tasks.dto.UrlEncodedPostParam;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HttpService {
 
-    public String makeUrlEncodedPost(String destination, String queryString, boolean requiresToken, String token) throws IOException {
-        URL url = new URL(destination);
+    public String makeUrlEncodedPost(UrlEncodedPostParam postParams) throws IOException {
+        URL url = new URL(postParams.getUrl());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        byte[] postData = queryString.getBytes( StandardCharsets.UTF_8 );
+        byte[] postData = postParams.getQueryString().getBytes( StandardCharsets.UTF_8 );
 
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
@@ -28,8 +29,8 @@ public class HttpService {
         conn.setRequestProperty("User-Agent", "Mozilla/5.0(X11;Linux X86_64...)Gecko/20100101 Firefox/68.0");
         conn.setRequestProperty("Content-Length", Integer.toString(postData.length));
         
-        if(requiresToken) {
-            conn.setRequestProperty("Authorization", "Bearer " + token);
+        if(postParams.isRequiresToken()) {
+            conn.setRequestProperty("Authorization", "Bearer " + postParams.getToken());
         }
         
         conn.setDoOutput(true);
@@ -46,7 +47,7 @@ public class HttpService {
             while ((output = in.readLine()) != null) {
                 response.append(output);
             }
-            if(requiresToken) {
+            if(postParams.isRequiresToken()) {
                 return response.toString();
             }
             return parseTextWithSingleGroup(response.toString());

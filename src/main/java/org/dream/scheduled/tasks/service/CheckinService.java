@@ -8,13 +8,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
 import org.dream.scheduled.tasks.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.dto.ResultDto;
+import org.dream.scheduled.tasks.dto.UrlEncodedPostParam;
 import org.dream.scheduled.tasks.util.AESUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -24,14 +27,12 @@ public class CheckinService {
     private CheckinConfigurationProperties checkinConfigurationProperties;
     private HttpService httpService;
     private Clock clock = Clock.systemDefaultZone();
+    @Getter private ThreadLocal<ResultDto> validateCheckinTimeResultThreadLocal = ThreadLocal.withInitial(ResultDto::new);
     
-    // Setter Injection
-    @Autowired
     public void setCheckinConfigurationProperties(CheckinConfigurationProperties checkinConfigurationProperties) {
         this.checkinConfigurationProperties = checkinConfigurationProperties;
     }
 
-    @Autowired
     public void setHttpService(HttpService httpService) {
         this.httpService = httpService;
     }
@@ -40,65 +41,40 @@ public class CheckinService {
         this.clock = clock;
     }
     
-    /**
-     * @author George-Chou
-     * @return 取得 OAuth 的 Bearer token
-     * @throws IOException
-     * @param username 使用者名稱
-     * @param secret   使用者秘密
-     * 
-     */
     public String getBearerToken(String username, String secret) throws IOException {
-        String destination = checkinConfigurationProperties.getTokenUrl();
+        String url = checkinConfigurationProperties.getTokenUrl();
         String format = "grant_type=password&username=%s&password=%s";
         String params = String.format(format, username, secret); 
         
-        return httpService.makeUrlEncodedPost(destination, params, false, null);
+        return httpService.makeUrlEncodedPost(new UrlEncodedPostParam(url, params, false, null));
     }
     
-    /**
-     * @author George-Chou
-     * @return 實際打卡
-     * @throws IOException
-     * 
-     * STEP 1: 取得打卡 URL 及 時間
-     * STEP 2: 檢查是否為週末或是國定假日
-     * STEP 3: 檢查是不是還不到可以打卡的時間
-     */
-    public String checkin(CheckinParamsDto checkinParams) throws IOException {
+    public void checkin(CheckinParamsDto checkinParams) throws IOException {
         log.info("打卡時收到的參數:" + checkinParams);
         
-        // STEP 1
-        String destination = checkinConfigurationProperties.getCheckinUrl();
+        ResultDto validateCheckinTimeResult = validateCheckinTimeResultThreadLocal.get();
+        String checkinUrl = checkinConfigurationProperties.getCheckinUrl();
+        String checkinTime = this.getCheckinTime(checkinParams);
+        this.validateCheckinTime(checkinTime);
+
+        if(validateCheckinTimeResult.isPass()) {
+            String token = this.getBearerToken(checkinParams.getUsername(), AESUtil.decrypt(checkinParams.getSecret()));
+            String checkinResult = httpService.makeUrlEncodedPost(new UrlEncodedPostParam(checkinUrl, checkinParams.getQueryString(), true, token));
+            if(!Objects.isNull(checkinResult))
+                validateCheckinTimeResult.setMessage(checkinResult);
+        }
+    }
+
+    private String getCheckinTime(CheckinParamsDto checkinParams) {
         String checkinTime = checkinParams.getCheckinTime();
         if(checkinTime == null) {
             checkinTime = this.getDefaultCheckinTime();
             checkinParams.setCheckinTime(checkinTime);
         }
-        
-        // STEP 2
-        if(isWeekend()) { return "週末打什麼卡"; }
-        if(isNationalHoliday()) { return "國定假日不打卡！"; }
-        
-        // STEP 3
-        if(checkinTime == null || checkinTime == "") {
-            return "還不能打卡喔！(開放時間為0800)";
-        }
-        else {
-            if(checkinConfigurationProperties.isEnabled()) {
-                String token = getBearerToken(checkinParams.getUsername(), AESUtil.decrypt(checkinParams.getSecret()));
-                return httpService.makeUrlEncodedPost(destination, checkinParams.getQueryString(), true, token);
-            }
-            else {
-                return "自動打卡功能未開啟";
-            }
-        }
+        return checkinTime;
     }
     
     /**
-     * @author George-Chou
-     * @return 打卡時間
-     * 
      * 預設是「上」班打卡限定在 07:59:999 與 17:30:00:000 之間
      * 預設是「下」班打卡限定在 17:30:00:000 之後
      */
@@ -121,12 +97,6 @@ public class CheckinService {
         return checkinTime;
     }
     
-    /**
-     * @author George-Chou
-     * @return 是否為「國定」假日
-     * 
-     * 預設是讀 application.yml 裡設定的假日清單
-     */
     private boolean isNationalHoliday() {
         LocalDate now = LocalDate.now(clock);
         List<String> holidayUnparsed = checkinConfigurationProperties.getHolidays();
@@ -166,11 +136,6 @@ public class CheckinService {
         return false;
     }
     
-    /**
-     * @author George-Chou
-     * @return 是否為週末
-     * 
-     */
     private boolean isWeekend() {
         LocalDate now = LocalDate.now(clock);
         DayOfWeek dayOfWeek = now.getDayOfWeek();
@@ -198,6 +163,42 @@ public class CheckinService {
             catch(Exception ex) {
                 return false;
             }
+        }
+        return false;
+    }
+
+    private boolean canCheckinNow(String checkinTime) {
+        // 不在可打卡時間內無法打卡
+        return checkinTime == null || checkinTime == "";
+    }
+
+    private void validateCheckinTime(String checkinTime) {
+        ResultDto validateCheckinTimeResult = validateCheckinTimeResultThreadLocal.get();
+        
+        if(!checkinConfigurationProperties.isEnabled()) {
+            validateCheckinTimeResult.setPass(false);
+            validateCheckinTimeResult.setMessage("自動打卡功能未開啟");
+            return;
+        }
+        if(this.isMakeUpWorkDay()) {
+            validateCheckinTimeResult.setPass(true);
+            validateCheckinTimeResult.setMessage("地獄補班日");;
+            return;
+        }
+        if(this.isWeekend()) { 
+            validateCheckinTimeResult.setPass(false);
+            validateCheckinTimeResult.setMessage("週末打什麼卡");
+            return;
+        }
+        if(this.isNationalHoliday()) { 
+            validateCheckinTimeResult.setPass(false);
+            validateCheckinTimeResult.setMessage("國定假日不打卡！");
+            return;
+        }
+        if(this.canCheckinNow(checkinTime)) {
+            validateCheckinTimeResult.setPass(false);
+            validateCheckinTimeResult.setMessage("還不能打卡喔！(開放時間為0800)");
+            return;
         }
     }
 

@@ -1,6 +1,7 @@
 package org.dream.scheduled.tasks.util;
 
 import java.util.Base64;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -21,7 +22,8 @@ public class AESUtil {
      
             byte[] encrypted = cipher.doFinal(value.getBytes());
             return new String(Base64.getEncoder().encode(encrypted));
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;
@@ -34,10 +36,15 @@ public class AESUtil {
      
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
-            byte[] original = cipher.doFinal(Base64.getDecoder().decode(encrypted));
-     
-            return new String(original);
-        } catch (Exception ex) {
+            if(Objects.isNull(encrypted)) {
+                return "";
+            }
+            else {
+                byte[] original = cipher.doFinal(Base64.getDecoder().decode(encrypted));
+                return new String(original);
+            }
+        } 
+        catch (Exception ex) {
             ex.printStackTrace();
         }
      

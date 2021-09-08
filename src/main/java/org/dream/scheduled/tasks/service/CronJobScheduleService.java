@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.dream.scheduled.tasks.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.dto.ResultDto;
 import org.dream.scheduled.tasks.entity.CronJobSchedule;
 import org.dream.scheduled.tasks.entity.TaskSubmitter;
 import org.dream.scheduled.tasks.repository.CronJobScheduleRepository;
@@ -258,23 +259,21 @@ public class CronJobScheduleService {
         return new ArrayList<>();
     }
     
-    /**
-     * 打卡的 Task
-     * @author George-Chou
-     *
-     */
     private class CheckinCronJob {
         private final String taskParameters;
         public CheckinCronJob(String taskParameters) {
             this.taskParameters = taskParameters;
         }
+        
         @SuppressWarnings("unused")
         public void execute() {
             CheckinParamsDto checkinParams = JSONUtil.fromJsonString(taskParameters, CheckinParamsDto.class);
             try {
-                String result = checkinService.checkin(checkinParams);
-                log.info(LocalDateTime.now().toLocalDate() + " 打卡結果:" + result);
-                boolean mailSent = mailService.sendEmail(Arrays.asList(checkinParams.getMail()), "打卡結果", result);
+                checkinService.checkin(checkinParams);
+                ResultDto validateCheckinTimeResult = checkinService.getValidateCheckinTimeResultThreadLocal().get();
+                String resultMessage = validateCheckinTimeResult.getMessage();
+                log.info(LocalDateTime.now().toLocalDate() + " 打卡結果:" + resultMessage);
+                boolean mailSent = mailService.sendEmail(Arrays.asList(checkinParams.getMail()), "打卡結果", resultMessage);
                 if(!mailSent) {
                     log.info("發信失敗");
                 }

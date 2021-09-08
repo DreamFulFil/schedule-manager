@@ -15,6 +15,8 @@ import java.util.Arrays;
 
 import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
 import org.dream.scheduled.tasks.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.dto.ResultDto;
+import org.dream.scheduled.tasks.dto.UrlEncodedPostParam;
 import org.dream.scheduled.tasks.service.CheckinService;
 import org.dream.scheduled.tasks.service.HttpService;
 import org.junit.jupiter.api.Test;
@@ -46,7 +48,7 @@ class CheckinServiceUnitTest {
 	    String secret = "test_secret";
 	    
 	    // 實際呼叫相依物件 HttpService 的 makeUrlEncodedPost 時會收到的參數
-	    String destination = null;
+	    String url = null;
 	    String queryString = "grant_type=password&username=test_user&password=test_secret";
 	    boolean requiresToken = false;
 	    String token = null;
@@ -55,7 +57,7 @@ class CheckinServiceUnitTest {
 	    checkinService.getBearerToken(username, secret);
 	    
 	    // Assert
-	    verify(httpService, times(1)).makeUrlEncodedPost(destination, queryString, requiresToken, token);
+	    verify(httpService, times(1)).makeUrlEncodedPost(new UrlEncodedPostParam(url, queryString, requiresToken, token));
 	}
 	
 	@Test
@@ -69,13 +71,13 @@ class CheckinServiceUnitTest {
 	    
 	    CheckinParamsDto checkinParams = mock(CheckinParamsDto.class);
 	    when(checkinConfigurationProperties.isEnabled()).thenReturn(false);
-	    when(checkinConfigurationProperties.getHolidays()).thenReturn(Arrays.asList(""));
-	    when(checkinConfigurationProperties.getCheckinTime()).thenReturn("08:30");
 	    String expectedResult = "自動打卡功能未開啟";
 	    
 	    // Act
-	    String result = checkinService.checkin(checkinParams);
-	    
+	    checkinService.checkin(checkinParams);
+		ResultDto validateResult = checkinService.getValidateCheckinTimeResultThreadLocal().get();
+	    String result = validateResult.getMessage();
+
 	    // Assert
 	    assertEquals(expectedResult,result);
 	}
@@ -89,10 +91,13 @@ class CheckinServiceUnitTest {
         
         CheckinParamsDto checkinParams = mock(CheckinParamsDto.class);
         when(checkinConfigurationProperties.getCheckinTime()).thenReturn("08:30");
+		when(checkinConfigurationProperties.isEnabled()).thenReturn(true);
         String expectedResult = "週末打什麼卡";
         
         // Act
-        String result = checkinService.checkin(checkinParams);
+        checkinService.checkin(checkinParams);
+		ResultDto validateResult = checkinService.getValidateCheckinTimeResultThreadLocal().get();
+	    String result = validateResult.getMessage();
         
         // Assert
         assertEquals(expectedResult,result);
@@ -100,21 +105,46 @@ class CheckinServiceUnitTest {
 	
 	@Test
     public void givenNationalHoliday_whenCheckin_thenReturnsDontCheckinOnWeekends() throws IOException {
-        // 讓這個測試不要被系統時間綁住，寫死在 2020/02/28 08:40(國定假)
-        LocalDateTime fixedTime = LocalDateTime.of(2020,2,28,8,40,0,0);
+        // 讓這個測試不要被系統時間綁住，寫死在 2021/01/01 08:40(國定假日)
+        LocalDateTime fixedTime = LocalDateTime.of(2021,1,1,8,40,0,0);
         Clock clock = Clock.fixed(fixedTime.toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
         checkinService.setClock(clock);
         
         CheckinParamsDto checkinParams = mock(CheckinParamsDto.class);
-        when(checkinConfigurationProperties.getHolidays()).thenReturn(Arrays.asList("2020/02/28"));
+        when(checkinConfigurationProperties.getHolidays()).thenReturn(Arrays.asList("2021/01/01"));
         when(checkinConfigurationProperties.getCheckinTime()).thenReturn("08:30");
+		when(checkinConfigurationProperties.isEnabled()).thenReturn(true);
         String expectedResult = "國定假日不打卡！";
         
         // Act
-        String result = checkinService.checkin(checkinParams);
+        checkinService.checkin(checkinParams);
+		ResultDto validateResult = checkinService.getValidateCheckinTimeResultThreadLocal().get();
+	    String result = validateResult.getMessage();
         
         // Assert
         assertEquals(expectedResult,result);
     }
+
+	@Test
+    public void givenMakeUpWorkDay_whenCheckin_thenReturnsMakeUpWorkDayHell() throws IOException {
+	    // 讓這個測試不要被系統時間綁住，寫死在 2021/09/11 08:40(中秋節補班)
+        LocalDateTime fixedTime = LocalDateTime.of(2021,9,11,8,40,0,0);
+        Clock clock = Clock.fixed(fixedTime.toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
+        checkinService.setClock(clock);
+        
+        CheckinParamsDto checkinParams = mock(CheckinParamsDto.class);
+		when(checkinConfigurationProperties.isEnabled()).thenReturn(true);
+		when(checkinConfigurationProperties.getMakeUpWorkDays()).thenReturn(Arrays.asList("2021/09/11"));
+        when(checkinConfigurationProperties.getCheckinTime()).thenReturn("08:30");
+        String expectedResult = "地獄補班日";
+        
+        // Act
+        checkinService.checkin(checkinParams);
+		ResultDto validateResult = checkinService.getValidateCheckinTimeResultThreadLocal().get();
+	    String result = validateResult.getMessage();
+        
+        // Assert
+        assertEquals(expectedResult,result);
+	}
 
 }
