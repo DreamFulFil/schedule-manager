@@ -15,6 +15,7 @@ import org.dream.scheduled.tasks.dto.CheckinParamsDto;
 import org.dream.scheduled.tasks.dto.ResultDto;
 import org.dream.scheduled.tasks.dto.UrlEncodedPostParam;
 import org.dream.scheduled.tasks.util.AESUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.Getter;
@@ -29,10 +30,12 @@ public class CheckinService {
     private Clock clock = Clock.systemDefaultZone();
     @Getter private ThreadLocal<ResultDto> validateCheckinTimeResultThreadLocal = ThreadLocal.withInitial(ResultDto::new);
     
+    @Autowired
     public void setCheckinConfigurationProperties(CheckinConfigurationProperties checkinConfigurationProperties) {
         this.checkinConfigurationProperties = checkinConfigurationProperties;
     }
 
+    @Autowired
     public void setHttpService(HttpService httpService) {
         this.httpService = httpService;
     }
