@@ -1,4 +1,4 @@
-package org.dream.scheduled.tasks.unit.tests;
+package org.dream.scheduled.tasks.unit.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
