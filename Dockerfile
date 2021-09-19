@@ -1,7 +1,13 @@
 FROM alpine:latest
 
-ENV JAVA_HOME="/usr/lib/jvm/default-jvm/"
-RUN apk add openjdk11-jre
+# Install openjdk
+ENV JAVA_HOME="/opt/openjdk"
+ENV JVM_DOWNLOAD_URL = "https://cdn.azul.com/zulu/bin/zulu17.28.13-ca-jdk17.0.0-linux_musl_x64.tar.gz"
+RUN apk add --nocache curl && \
+    curl -L $JVM_DOWNLOAD_URL -o jdk.tar.gz && \
+    tar -zxf jdk.tar.gz -C /opt && \
+    mv /opt/zulu* /opt/openjdk && \
+    rm -rf jdk.tar.gz
 
 # Has to be set explictly to find binaries 
 ENV PATH=$PATH:${JAVA_HOME}/bin
