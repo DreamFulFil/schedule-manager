@@ -112,7 +112,7 @@ spring:
       on-profile: 
       - mysql
   datasource:
-    url: jdbc:mysql://localhost:3306/checkin?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://mysql:3306/checkin?useUnicode=true&characterEncoding=utf-8
     username: scheduleclient
     password: schedule@1234
     # password: ENC(9gWZ1H4mWkp415jkGnX13vt9h+e/Hpuv)
