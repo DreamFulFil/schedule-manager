@@ -177,7 +177,8 @@ public class CheckinService {
 
     private void validateCheckinTime(String checkinTime) {
         ResultDto validateCheckinTimeResult = validateCheckinTimeResultThreadLocal.get();
-        
+        validateCheckinTimeResult.setPass(true); // 防止剛好遇到週末打卡的 ThreadLocal
+
         if(!checkinConfigurationProperties.isEnabled()) {
             validateCheckinTimeResult.setPass(false);
             validateCheckinTimeResult.setMessage("自動打卡功能未開啟");
@@ -185,7 +186,7 @@ public class CheckinService {
         }
         if(this.isMakeUpWorkDay()) {
             validateCheckinTimeResult.setPass(true);
-            validateCheckinTimeResult.setMessage("地獄補班日");;
+            validateCheckinTimeResult.setMessage("地獄補班日");
             return;
         }
         if(this.isWeekend()) { 
