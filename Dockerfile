@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.15.0
 
 # Install openjdk
 ENV JAVA_HOME="/opt/openjdk"
@@ -9,9 +9,9 @@ RUN apk add --no-cache curl && \
     mv /opt/zulu* /opt/openjdk && \
     rm -rf jdk.tar.gz
 
-# Has to be set explictly to find binaries 
+# Has to be set explictly to find binaries
+# GOSU is used to run process as "user" with pid 1
 ENV PATH=$PATH:${JAVA_HOME}/bin
-
 ENV GOSU_VERSION 1.12
 RUN set -eux; \
 	\
@@ -40,37 +40,37 @@ RUN set -eux; \
 	gosu --version; \
 	gosu nobody true
 
-ARG JAR_NAME=app.jar
-
-ARG HOME_DIR=/home/java-app
 
 # Setting timezone
 ENV TZ=Asia/Taipei
 
+ARG JAR_NAME=app.jar
+ARG HOME_DIR=/home/java-app
 ENV JAR_PATH=$HOME_DIR/$JAR_NAME
-
 ENV CONFIG_PATH=$HOME_DIR/config
 
+# tzdata -> Timezone
+# ttf-dejavu -> Fonts for display(e.g. java.awt.Graphics.setFont)
 RUN apk --update add tzdata && \
     apk --update add ttf-dejavu fontconfig && \
     cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime && \
     apk del tzdata && \
     rm -rf /var/cache/apk/*
 
+# Create user and group "java-app" to restrict 
 RUN set -eux && \
     addgroup --gid 9999 java-app && \
     adduser -S -u 9999 -g java-app -h $HOME_DIR -s /bin/sh -D java-app && \
     chown -R java-app:java-app $HOME_DIR
 
+# Create directory for placing logs
 RUN mkdir -p ${HOME_DIR}/logs && \
     chown -R java-app:java-app ${HOME_DIR}/logs 
 
+# Copy artifact and configuration files
 COPY --chown=java-app:java-app ./target/*-SNAPSHOT.jar $JAR_PATH
-
 COPY --chown=java-app:java-app ./target/classes/application.yml $CONFIG_PATH/application.yml
-
 COPY --chown=java-app:java-app ./target/classes/log4j2.yml $CONFIG_PATH/log4j2.yml
-
 COPY ./entrypoint.sh entrypoint.sh
 
 RUN chmod +x entrypoint.sh
