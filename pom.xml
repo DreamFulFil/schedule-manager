@@ -24,6 +24,8 @@
 
         <!-- Spring Cloud -->
         <spring-cloud.version>2020.0.3</spring-cloud.version>
+
+        <log4j2.version>2.15.0</log4j2.version>
     </properties>
 
     <dependencies>
@@ -113,7 +115,7 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-        
+
         <!-- Database Dependencies # Start # -->
         <dependency>
             <groupId>com.h2database</groupId>
