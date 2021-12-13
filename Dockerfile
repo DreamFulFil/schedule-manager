@@ -2,7 +2,7 @@ FROM alpine:3.15.0
 
 # Install openjdk
 ENV JAVA_HOME="/opt/openjdk"
-ENV JVM_DOWNLOAD_URL="https://cdn.azul.com/zulu/bin/zulu17.28.13-ca-jdk17.0.0-linux_musl_x64.tar.gz"
+ENV JVM_DOWNLOAD_URL="https://cdn.azul.com/zulu/bin/zulu17.30.15-ca-jre17.0.1-linux_musl_x64.tar.gz"
 RUN apk add --no-cache curl && \
     curl -L ${JVM_DOWNLOAD_URL} -o jdk.tar.gz 1>/dev/null && \
     tar -zxf jdk.tar.gz -C /opt && \
