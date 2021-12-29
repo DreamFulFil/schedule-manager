@@ -3,18 +3,19 @@ services:
   apipm-service:
     image: ${REGISTRY_SERVER}/checkin-service:${CHECKIN_TAG_VERSION}
     container_name: checkin
+    restart: always
     expose:
       - "6666"
-      - "46666"
+      - "40000"
     ports:
       - "6666:6666"
-      - "46666:46666"
+      - "40000:40000"
     networks:
       - isbg-products
     volumes:
       - checkin-vol:/home/java-app/config
     environment:
-      - JAVA_OPTS= -XX:+UseZGC -Xss1024k -Xms64M -Xmx128M -XX:+PrintGCDetails -Xloggc:/home/java-app/gc.log -Dcom.sun.management.jmxremote.port=46666 -Dcom.sun.management.jmxremote.rmi.port=46666 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=172.16.7.111
+      - JAVA_OPTS= -XX:+UseZGC -Xss1024k -Xms64M -Xmx128M -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:40000
       - TZ=Asia/Taipei
 
 volumes:
