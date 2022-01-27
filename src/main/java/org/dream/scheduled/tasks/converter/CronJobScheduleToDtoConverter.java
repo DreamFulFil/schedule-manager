@@ -1,8 +1,8 @@
 package org.dream.scheduled.tasks.converter;
 
-import org.dream.scheduled.tasks.dto.CheckinParamsDto;
-import org.dream.scheduled.tasks.form.CronJobScheduleInsertForm;
-import org.dream.scheduled.tasks.form.CronJobScheduleUpdateForm;
+import org.dream.scheduled.tasks.model.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.model.form.CronJobScheduleInsertForm;
+import org.dream.scheduled.tasks.model.form.CronJobScheduleUpdateForm;
 import org.dream.scheduled.tasks.util.AESUtil;
 import org.springframework.stereotype.Component;
 

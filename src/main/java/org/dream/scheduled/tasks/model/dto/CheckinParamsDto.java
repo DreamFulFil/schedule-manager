@@ -1,4 +1,4 @@
-package org.dream.scheduled.tasks.dto;
+package org.dream.scheduled.tasks.model.dto;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.time.Clock;
 
-import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
-import org.dream.scheduled.tasks.dto.CheckinParamsDto;
-import org.dream.scheduled.tasks.dto.ResultDto;
+import org.dream.scheduled.tasks.configuration.CheckinConfigurationProperties;
+import org.dream.scheduled.tasks.model.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.model.dto.ResultDto;
 import org.dream.scheduled.tasks.service.CheckinService;
 import org.dream.scheduled.tasks.service.HttpService;
 import org.dream.scheduled.tasks.util.AESUtil;

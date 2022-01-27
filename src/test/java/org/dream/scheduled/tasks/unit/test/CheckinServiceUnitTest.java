@@ -13,10 +13,10 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 
-import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
-import org.dream.scheduled.tasks.dto.CheckinParamsDto;
-import org.dream.scheduled.tasks.dto.ResultDto;
-import org.dream.scheduled.tasks.dto.UrlEncodedPostParam;
+import org.dream.scheduled.tasks.configuration.CheckinConfigurationProperties;
+import org.dream.scheduled.tasks.model.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.model.dto.ResultDto;
+import org.dream.scheduled.tasks.model.dto.UrlEncodedPostParam;
 import org.dream.scheduled.tasks.service.CheckinService;
 import org.dream.scheduled.tasks.service.HttpService;
 import org.junit.jupiter.api.Test;

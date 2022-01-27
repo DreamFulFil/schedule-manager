@@ -1,7 +1,7 @@
 package org.dream.scheduled.tasks.repository;
 
-import org.dream.scheduled.tasks.entity.CronJobSchedule;
-import org.dream.scheduled.tasks.entity.TaskSubmitter;
+import org.dream.scheduled.tasks.model.entity.CronJobSchedule;
+import org.dream.scheduled.tasks.model.entity.TaskSubmitter;
 import org.springframework.data.jpa.repository.Query;
 
 public interface TaskSubmitterRepository extends BaseRepository<TaskSubmitter, Integer> {

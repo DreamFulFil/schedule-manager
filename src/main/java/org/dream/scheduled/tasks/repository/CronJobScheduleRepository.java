@@ -1,6 +1,6 @@
 package org.dream.scheduled.tasks.repository;
 
-import org.dream.scheduled.tasks.entity.CronJobSchedule;
+import org.dream.scheduled.tasks.model.entity.CronJobSchedule;
 
 public interface CronJobScheduleRepository extends BaseRepository<CronJobSchedule, Integer> {
     

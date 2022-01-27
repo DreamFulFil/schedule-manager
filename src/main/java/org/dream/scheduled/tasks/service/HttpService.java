@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.dream.scheduled.tasks.dto.UrlEncodedPostParam;
+import org.dream.scheduled.tasks.model.dto.UrlEncodedPostParam;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -11,10 +11,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
-import org.dream.scheduled.tasks.dto.CheckinParamsDto;
-import org.dream.scheduled.tasks.dto.ResultDto;
-import org.dream.scheduled.tasks.entity.CronJobSchedule;
-import org.dream.scheduled.tasks.entity.TaskSubmitter;
+import org.dream.scheduled.tasks.model.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.model.dto.ResultDto;
+import org.dream.scheduled.tasks.model.entity.CronJobSchedule;
+import org.dream.scheduled.tasks.model.entity.TaskSubmitter;
 import org.dream.scheduled.tasks.repository.CronJobScheduleRepository;
 import org.dream.scheduled.tasks.util.JSONUtil;
 import org.quartz.JobDetail;

@@ -10,10 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import org.dream.scheduled.tasks.configuration.properties.CheckinConfigurationProperties;
-import org.dream.scheduled.tasks.dto.CheckinParamsDto;
-import org.dream.scheduled.tasks.dto.ResultDto;
-import org.dream.scheduled.tasks.dto.UrlEncodedPostParam;
+import org.dream.scheduled.tasks.configuration.CheckinConfigurationProperties;
+import org.dream.scheduled.tasks.model.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.model.dto.ResultDto;
+import org.dream.scheduled.tasks.model.dto.UrlEncodedPostParam;
 import org.dream.scheduled.tasks.util.AESUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

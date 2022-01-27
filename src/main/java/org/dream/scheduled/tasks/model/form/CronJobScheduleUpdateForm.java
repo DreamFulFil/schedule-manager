@@ -1,4 +1,4 @@
-package org.dream.scheduled.tasks.form;
+package org.dream.scheduled.tasks.model.form;
 
 import lombok.Data;
 

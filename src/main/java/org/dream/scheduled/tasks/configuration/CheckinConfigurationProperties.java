@@ -1,4 +1,4 @@
-package org.dream.scheduled.tasks.configuration.properties;
+package org.dream.scheduled.tasks.configuration;
 
 import java.util.List;
 

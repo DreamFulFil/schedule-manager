@@ -1,4 +1,4 @@
-package org.dream.scheduled.tasks.entity;
+package org.dream.scheduled.tasks.model.entity;
 
 import java.util.Date;
 

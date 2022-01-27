@@ -12,10 +12,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @SpringBootApplication
 @EnableConfigurationProperties
 @ConfigurationPropertiesScan("org.dream.scheduled.tasks.configuration.properties")
-public class ScheduleServiceApplication {
+public class ScheduleManagerMain {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ScheduleServiceApplication.class, args);
+		SpringApplication.run(ScheduleManagerMain.class, args);
 	}
 
 	@PostConstruct

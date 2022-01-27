@@ -1,4 +1,4 @@
-package org.dream.scheduled.tasks.dto;
+package org.dream.scheduled.tasks.model.dto;
 
 import lombok.Data;
 

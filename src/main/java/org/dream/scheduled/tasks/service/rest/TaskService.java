@@ -3,11 +3,11 @@ package org.dream.scheduled.tasks.service.rest;
 import java.util.List;
 
 import org.dream.scheduled.tasks.converter.CronJobScheduleToDtoConverter;
-import org.dream.scheduled.tasks.dto.CheckinParamsDto;
-import org.dream.scheduled.tasks.entity.CronJobSchedule;
-import org.dream.scheduled.tasks.entity.TaskSubmitter;
-import org.dream.scheduled.tasks.form.CronJobScheduleInsertForm;
-import org.dream.scheduled.tasks.form.CronJobScheduleUpdateForm;
+import org.dream.scheduled.tasks.model.dto.CheckinParamsDto;
+import org.dream.scheduled.tasks.model.entity.CronJobSchedule;
+import org.dream.scheduled.tasks.model.entity.TaskSubmitter;
+import org.dream.scheduled.tasks.model.form.CronJobScheduleInsertForm;
+import org.dream.scheduled.tasks.model.form.CronJobScheduleUpdateForm;
 import org.dream.scheduled.tasks.service.CronJobScheduleService;
 import org.dream.scheduled.tasks.service.TaskSubmitterService;
 import org.dream.scheduled.tasks.util.JSONUtil;
