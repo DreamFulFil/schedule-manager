@@ -11,7 +11,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 @SpringBootApplication
 @EnableConfigurationProperties
-@ConfigurationPropertiesScan("org.dream.scheduled.tasks.configuration.properties")
+@ConfigurationPropertiesScan(
+    basePackages = { "org.dream.scheduled.tasks.configuration" }
+)
 public class ScheduleManagerMain {
 
 	public static void main(String[] args) {
