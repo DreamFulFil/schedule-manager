@@ -10,6 +10,8 @@ public class JSONUtil {
 
     private static final ObjectMapper mapper = new ObjectMapper();
     
+    private JSONUtil(){}
+
     public static <T> String toJsonString(T object) {
         String taskParams = null;
         try {

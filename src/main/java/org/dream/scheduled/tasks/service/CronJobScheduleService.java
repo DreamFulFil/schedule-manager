@@ -17,7 +17,6 @@ import org.dream.scheduled.tasks.model.entity.CronJobSchedule;
 import org.dream.scheduled.tasks.model.entity.TaskSubmitter;
 import org.dream.scheduled.tasks.repository.CronJobScheduleRepository;
 import org.dream.scheduled.tasks.util.JSONUtil;
-import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -116,7 +115,7 @@ public class CronJobScheduleService {
             cronTrigger.setCronExpression(cronExp);
             cronTrigger.afterPropertiesSet();
             
-            scheduler.scheduleJob((JobDetail) jobDetail.getObject(), cronTrigger.getObject());
+            scheduler.scheduleJob(jobDetail.getObject(), cronTrigger.getObject());
             log.info("Scheduled job:"+ cronJobSchedule.getUniqueName());
         }
         catch(NoSuchMethodException | SchedulerException | ParseException | ClassNotFoundException ex) {
