@@ -1,5 +1,5 @@
 server:
-  port: 6666
+  port: 20000
 
 spring:
   profiles:
@@ -9,7 +9,7 @@ spring:
   # Spring cloud Vault settings
   cloud:
     vault:
-      token: s.e1WOzybN8OvJRIl47TofoHVO
+      token: s.CxHIBmRaFHslLGUcm5WOckro
       host: vault
       port: 8200
       scheme: http
@@ -74,6 +74,7 @@ spring:
   jpa:
     hibernate.ddl-auto: create
 ---
+# Profile h2
 spring:
   config:
     activate:
@@ -89,6 +90,7 @@ spring:
     password: dreamer@2020
     driver-class-name: org.h2.Driver
 ---
+# Profile mysql
 spring:
   application:
     name: jasyptEncryptionKey
@@ -104,12 +106,12 @@ spring:
     # Reference: 
     # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
     hikari:   
-     connection-timeout: 60000 # 建立 Connection 在連線時最多可以「等」Connection Pool 多久
-     idle-timeout: 600000      # 被建立的 Connection 能在 Pool 裡閒置多久
-     keepalive-time: 30000     # 確保 Connection 不會被 DBMS 回收的時間(需小於 maxLifetime，只會發生在 idle Connection)
-     max-lifetime: 600000      # 已建立的 Connection 在 Pool 能存在多久 (只有 Closed 會被刪)
-     minimum-idle: 10          # 最少要持有幾個 Idle Connection(需小於 maximumPoolSize)
-     maximum-pool-size: 10     # Pool 內能存放的最大連線數 (依情況調整大小)
+     connection-timeout: 60000      # 建立 Connection 在連線時最多可以「等」Connection Pool 多久
+     idle-timeout: 600000           # 被建立的 Connection 能在 Pool 裡閒置多久
+     keepalive-time: 30000          # 確保 Connection 不會被 DBMS 回收的時間(需小於 maxLifetime，只會發生在 idle Connection)
+     max-lifetime: 600000           # 已建立的 Connection 在 Pool 能存在多久 (只有 Closed 會被刪)
+     minimum-idle: 10               # 最少要持有幾個 Idle Connection(需小於 maximumPoolSize)
+     maximum-pool-size: 10          # Pool 內能存放的最大連線數 (依情況調整大小)
      leak-detection-threshold: 5000 # 偵測是否有 Connection Leak(沒關的 Connection)
 
 # Must add this for JASYPT to work
