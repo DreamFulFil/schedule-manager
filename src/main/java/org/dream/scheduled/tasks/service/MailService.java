@@ -22,12 +22,11 @@ public class MailService {
     
     public boolean sendEmail(List<String> to, List<String> cc, List<String> bcc, String subject, String text, List<String> pathToAttachments) {
         boolean validTo = RegexValidationUtil.validateEmails(to);
-        boolean validCc = (cc == null) ? true: RegexValidationUtil.validateEmails(cc);
-        boolean validBcc = (bcc == null ) ? true : RegexValidationUtil.validateEmails(bcc);
+        boolean validCc = (cc == null) ? Boolean.TRUE: RegexValidationUtil.validateEmails(cc);
+        boolean validBcc = (bcc == null ) ? Boolean.TRUE : RegexValidationUtil.validateEmails(bcc);
         if(!validTo || !validCc || !validBcc) {
             return false;
         }
-        
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
@@ -43,7 +42,7 @@ public class MailService {
                 messageHelper.setBcc(bcc.toArray(new String[0]));
             }
             
-            if(pathToAttachments != null && pathToAttachments.size() > 0) {
+            if(CollectionUtils.isEmpty(pathToAttachments)) {
                 for(String pathToAttachment : pathToAttachments) {
                     FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
                     messageHelper.addAttachment(file.getFilename(), file);
