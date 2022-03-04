@@ -202,7 +202,6 @@ public class CheckinService {
         if(this.canCheckinNow(checkinTime)) {
             validateCheckinTimeResult.setPass(false);
             validateCheckinTimeResult.setMessage("還不能打卡喔！(開放時間為0800)");
-            return;
         }
     }
 
