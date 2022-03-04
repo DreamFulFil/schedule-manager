@@ -1,13 +1,10 @@
 package org.dream.scheduled.tasks.service;
 
-import java.util.Objects;
-
 import org.dream.scheduled.tasks.model.entity.CronJobSchedule;
 import org.dream.scheduled.tasks.model.entity.TaskSubmitter;
 import org.dream.scheduled.tasks.repository.TaskSubmitterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class TaskSubmitterService {
