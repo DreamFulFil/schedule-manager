@@ -15,6 +15,14 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+- This project is used to schedule and manage tasks asynchronously
+- Technologies used
+  - Spring boot 2.6.4
+  - Spring Cloud Vault
+  - Spring Security(Basic Authentication)
+  - Spring Data JPA
+  - Log4j2
+  - Java 17
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -30,6 +38,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- CONTACT -->
 ## Contact
-GC - [@twitter](https://twitter.com/your_username) - georgechou324@gmail.com
+GC - [@fulfil_dream](https://twitter.com/fulfil_dream) - georgechou324@gmail.com
 Project Link: [schedule-manager](https://github.com/DreamFulFil/schedule-manager)
 <p align="right">(<a href="#top">back to top</a>)</p>
