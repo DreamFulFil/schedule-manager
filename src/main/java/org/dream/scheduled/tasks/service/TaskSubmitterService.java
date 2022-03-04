@@ -1,10 +1,13 @@
 package org.dream.scheduled.tasks.service;
 
+import java.util.Objects;
+
 import org.dream.scheduled.tasks.model.entity.CronJobSchedule;
 import org.dream.scheduled.tasks.model.entity.TaskSubmitter;
 import org.dream.scheduled.tasks.repository.TaskSubmitterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class TaskSubmitterService {
@@ -13,6 +16,9 @@ public class TaskSubmitterService {
     private TaskSubmitterRepository taskSubmitterRepository;
     
     public TaskSubmitter findByName(String name) {
+        if(!StringUtils.hasText(name)) {
+            throw new IllegalArgumentException("No name provided");
+        }
         return taskSubmitterRepository.findByName(name);
     }
     
@@ -27,6 +33,9 @@ public class TaskSubmitterService {
      * @return 註冊者
      */
     public TaskSubmitter findByNameAndSaveIfNotExists(String name, String secret) {
+        if(!StringUtils.hasText(secret)) {
+            throw new IllegalArgumentException("No secret provided");
+        }
         TaskSubmitter submitter = this.findByName(name);
         if(submitter == null) {
             submitter = new TaskSubmitter();
@@ -38,6 +47,9 @@ public class TaskSubmitterService {
     }
     
     public TaskSubmitter save(TaskSubmitter taskSubmitter) {
+        if(Objects.isNull(taskSubmitter)) {
+            throw new IllegalArgumentException("No task submitter provided");
+        }
         return taskSubmitterRepository.save(taskSubmitter);
     }
     
