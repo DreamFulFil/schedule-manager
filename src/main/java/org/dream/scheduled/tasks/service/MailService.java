@@ -42,7 +42,7 @@ public class MailService {
                 messageHelper.setBcc(bcc.toArray(new String[0]));
             }
             
-            if(CollectionUtils.isEmpty(pathToAttachments)) {
+            if(!CollectionUtils.isEmpty(pathToAttachments)) {
                 for(String pathToAttachment : pathToAttachments) {
                     FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
                     messageHelper.addAttachment(file.getFilename(), file);
