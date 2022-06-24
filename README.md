@@ -17,7 +17,7 @@
 ## About The Project
 - This project is used to schedule and manage tasks asynchronously
 - Technologies used
-  - Spring boot 2.6.4
+  - Spring boot 2.7.0
   - Spring Cloud Vault
   - Spring Security(Basic Authentication)
   - Spring Data JPA
