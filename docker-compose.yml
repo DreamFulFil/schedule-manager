@@ -1,8 +1,8 @@
 version: '3.7'
 services:
-  apipm-service:
-    image: ${REGISTRY_SERVER}/checkin-service:${CHECKIN_TAG_VERSION}
-    container_name: checkin
+  scheduler:
+    image: scheduler:${SCHEDULER_TAG_VERSION}
+    container_name: scheduler
     restart: always
     expose:
       - "20000"

@@ -9,12 +9,14 @@ spring:
   # Spring cloud Vault settings
   cloud:
     vault:
-      token: s.CxHIBmRaFHslLGUcm5WOckro
+      token: s.eQyA3EMe9C0lPxgcVLiimGup
       host: vault
       port: 8200
       scheme: http
       kv:
         enabled: true
+  config:
+    import: vault://
 
   # JPA settings
   jpa:
@@ -94,15 +96,10 @@ spring:
 spring:
   application:
     name: jasyptEncryptionKey
-  config:
-    import: vault://
-    activate:
-      on-profile: 
-      - mysql
   datasource:
     url: jdbc:mysql://mysql:3306/checkin?useUnicode=true&characterEncoding=utf-8
-    username: scheduleclient
-    password: ENC(9gWZ1H4mWkp415jkGnX13vt9h+e/Hpuv)
+    username: ENC(JCqAmPH4DluBjY311yp7fQ==)
+    password: ENC(i2y2k1+Adn+wRj72Egqpyw==)
     # Reference: 
     # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
     hikari:   
