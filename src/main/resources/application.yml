@@ -98,8 +98,8 @@ spring:
     name: jasyptEncryptionKey
   datasource:
     url: jdbc:mysql://mysql:3306/checkin?useUnicode=true&characterEncoding=utf-8
-    username: ENC(JCqAmPH4DluBjY311yp7fQ==)
-    password: ENC(i2y2k1+Adn+wRj72Egqpyw==)
+    username: ENC(O6KWDWODV+j0tF8s6gcJzA==)
+    password: ENC(1dNgjiLoBueGFm9RipEwua4/YLo/Zkpl)
     # Reference: 
     # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
     hikari:   
