@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -22,11 +20,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
  */
 @Configuration
 public class SecurityConfigurations {
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -43,10 +36,7 @@ public class SecurityConfigurations {
 
         http
           .requestMatchers()
-              .antMatchers(
-                  "/task/**",
-                  "/heartbeat/**"
-              )
+              .antMatchers("/task/**", "/heartbeat/**")
           .and()
           .authorizeRequests()
               .antMatchers("/task/**").hasAuthority("REST")
@@ -79,5 +69,4 @@ public class SecurityConfigurations {
             );
         return new InMemoryUserDetailsManager(userDetails);
     }
-    
 }
