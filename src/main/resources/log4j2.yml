@@ -26,16 +26,14 @@ Configuration:
         DefaultRollOverStrategy:
           # 在此設定何時刪 Roll 出去的檔案，原則上是上方的 Policy 觸發時才會檢查是否要刪檔
           Delete:
-            basePath: /home/java-app/logs/
+            basePath: ${sys:user.home}/logs/
             maxDepth: 3
             # 符合某檔名規則的 log
             IfFileName:
-              glob: "*/apipm-*.log.gz"
+              glob: "*/schedule-*.log.gz"
             # 如果最後一次修改是 30 天前
             IfLastModified:
               age: 365d
-
-
 
   Loggers:
     logger:
